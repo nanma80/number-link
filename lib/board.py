@@ -19,6 +19,11 @@ class Board(object):
         self.build_valid_moves()
 
     def is_valid(self):
+        row_lengths = [len(row) for row in self.board]
+        if min(row_lengths) != max(row_lengths):
+            print('Board is not rectangular')
+            return False
+
         product = 1
         for row in self.board:
             for element in row:
@@ -28,7 +33,8 @@ class Board(object):
         seen = set([x])
         while x * x != product:
             x = (x + (product // x)) // 2
-            if x in seen: 
+            if x in seen:
+                print('Numbers cannot be all canceled out') 
                 return False
             seen.add(x)
         return True
