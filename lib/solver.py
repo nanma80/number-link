@@ -63,21 +63,8 @@ class Solver(object):
                     return
                 if len(new_board.valid_moves) == 0:
                     continue
+                if new_board.is_skewed():
+                    continue
                 self.boards_to_process.append(new_board)
             self.boards_to_process.sort(key=lambda x: -len(x.pieces))
         print('Unsolvable')
-
-
-
-    def naive_solve(self):
-        print('Board loaded:')
-        self.board.print()
-        for i in range(100):
-            if len(self.board.valid_moves) == 0:
-                print('Not solvable')
-                break
-            self.board = self.board.apply_move(self.board.valid_moves[0])
-            if self.board.is_solved():
-                print('Solved!\n')
-                break
-        self.board.print_history()

@@ -3,6 +3,9 @@
 import math
 from copy import copy, deepcopy
 import colorama
+# https://github.com/elliptic-shiho/primefac-fork
+# need to run pip3 install git+git://github.com/elliptic-shiho/primefac-fork@master
+import primefac
 
 PLACEHOLDER = 1
 colorama.init()
@@ -17,6 +20,23 @@ class Board(object):
         self.build_neighbors()
         self.build_pieces()
         self.build_valid_moves()
+
+    def is_skewed(self):
+        factor_number_map = {}
+        for row_id in range(self.height):
+            for column_id in range(self.width):
+                element = self.get_value([row_id, column_id])
+                for factor in primefac.primefac(element):
+                    if factor in factor_number_map:
+                        factor_number_map[factor].add( (row_id, column_id) )
+                    else:
+                        factor_number_map[factor] = set([(row_id, column_id)])
+        for factor in factor_number_map:
+            appear_count = len(factor_number_map[factor])
+            if appear_count == 1:
+                return True
+        return False
+
 
     def is_valid(self):
         row_lengths = [len(row) for row in self.board]
