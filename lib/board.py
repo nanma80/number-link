@@ -6,6 +6,7 @@ import colorama
 # https://github.com/elliptic-shiho/primefac-fork
 # need to run pip3 install git+git://github.com/elliptic-shiho/primefac-fork@master
 import primefac
+from collections import Counter
 
 PLACEHOLDER = 1
 colorama.init()
@@ -26,15 +27,21 @@ class Board(object):
         for row_id in range(self.height):
             for column_id in range(self.width):
                 element = self.get_value([row_id, column_id])
-                for factor in primefac.primefac(element):
+                factor_counts = Counter(primefac.primefac(element))
+
+                for factor in factor_counts:
                     if factor in factor_number_map:
-                        factor_number_map[factor].add( (row_id, column_id) )
+                        factor_number_map[factor].append(factor_counts[factor])
                     else:
-                        factor_number_map[factor] = set([(row_id, column_id)])
+                        factor_number_map[factor] = [ factor_counts[factor] ]
+
         for factor in factor_number_map:
-            appear_count = len(factor_number_map[factor])
-            if appear_count == 1:
+            factor_levels = sorted(factor_number_map[factor], reverse=True)
+            if len(factor_levels) == 1:
                 return True
+            if factor_levels[0] > sum(factor_levels[1:]):
+                return True
+
         return False
 
 
