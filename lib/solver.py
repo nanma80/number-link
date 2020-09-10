@@ -21,8 +21,16 @@ class Solver(object):
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
-                input_board.append([int(element) for element in row])
+                input_board.append([self.import_number(element) for element in row])
         return self.pad_board(input_board)
+
+    def import_number(self, number_str):
+        number_str = number_str.strip()
+        if len(number_str) > 0:
+            number = int(number_str)
+            if number > 1:
+                return number
+        return PLACEHOLDER
 
     def solve(self):
         print('Board loaded:')
