@@ -66,5 +66,5 @@ class Solver(object):
                 if new_board.is_skewed():
                     continue
                 self.boards_to_process.append(new_board)
-            self.boards_to_process.sort(key=lambda x: -len(x.pieces))
+            # self.boards_to_process.sort(key=lambda x: -len(x.pieces))
         print('Unsolvable')
