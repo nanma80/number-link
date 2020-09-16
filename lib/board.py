@@ -12,14 +12,16 @@ PLACEHOLDER = 1
 colorama.init()
 
 class Board(object):
-    def __init__(self, board):
+    def __init__(self, board, validation = False):
         self.board = board
         self.height = len(self.board)
         self.width = len(self.board[0]) # assume the board is not empty
         self.history_boards = [ self.board ]
         self.history_moves = []
-        if not self.is_rectangular():
-            raise Exception('Board is not rectangular')
+        if validation:
+            if not self.is_valid():
+                raise Exception('Input is invalid')
+
         self.build_neighbors()
         self.build_pieces()
         self.build_valid_moves()
@@ -58,10 +60,7 @@ class Board(object):
             return False
         return True
 
-    def is_valid(self):
-        if not self.is_rectangular():
-            return False
-
+    def can_cancel_all(self):
         product = 1
         for row in self.board:
             for element in row:
@@ -76,6 +75,10 @@ class Board(object):
                 return False
             seen.add(x)
         return True
+
+    def is_valid(self):
+        return self.is_rectangular() and self.can_cancel_all()
+
 
     def to_string(self):
         return str(self.board)
@@ -199,7 +202,7 @@ class Board(object):
         new_board = deepcopy(self.board)
         new_board[move[0][0]][move[0][1]] = int(value1/gcd)
         new_board[move[1][0]][move[1][1]] = int(value2/gcd)
-        new_board_object = Board(new_board)
+        new_board_object = Board(new_board, False)
 
         history_moves = deepcopy(self.history_moves)
         history_moves.append(move)

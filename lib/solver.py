@@ -8,7 +8,7 @@ from board import *
 
 class Solver(object):
     def __init__(self, filename):
-        self.board = Board(self.import_csv(filename))
+        self.board = Board(self.import_csv(filename), True)
 
     def pad_board(self, input_board):
         board = [[PLACEHOLDER] + row + [PLACEHOLDER] for row in input_board ]

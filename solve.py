@@ -13,9 +13,6 @@ def main():
 
     csv_filename = sys.argv[1]
     solver = Solver(csv_filename)
-    if not solver.board.is_valid():
-        print('Board is invalid')
-        return
     solver.solve()
 
 if __name__ == "__main__":
