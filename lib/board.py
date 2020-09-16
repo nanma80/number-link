@@ -39,7 +39,11 @@ class Board(object):
             factor_levels = sorted(factor_number_map[factor], reverse=True)
             if len(factor_levels) == 1:
                 return True
-            if factor_levels[0] > sum(factor_levels[1:]):
+
+            greatest_value = factor_levels[0]
+            greatest_value_indices = [i for i, x in enumerate(factor_levels) if x == greatest_value]
+
+            if len(greatest_value_indices) % 2 == 1 and greatest_value > sum(factor_levels[max(greatest_value_indices) + 1:]):
                 return True
 
         return False
