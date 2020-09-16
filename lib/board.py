@@ -18,6 +18,8 @@ class Board(object):
         self.width = len(self.board[0]) # assume the board is not empty
         self.history_boards = [ self.board ]
         self.history_moves = []
+        if not self.is_rectangular():
+            raise Exception('Board is not rectangular')
         self.build_neighbors()
         self.build_pieces()
         self.build_valid_moves()
@@ -48,11 +50,16 @@ class Board(object):
 
         return False
 
-
-    def is_valid(self):
+    def is_rectangular(self):
         row_lengths = [len(row) for row in self.board]
         if min(row_lengths) != max(row_lengths):
             print('Board is not rectangular')
+            print(row_lengths)
+            return False
+        return True
+
+    def is_valid(self):
+        if not self.is_rectangular():
             return False
 
         product = 1
